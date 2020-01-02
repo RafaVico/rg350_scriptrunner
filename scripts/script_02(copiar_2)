@@ -1,0 +1,7 @@
+#!/bin/sh
+# title=Adios mundo
+# desc=Imprime Hola Mundo en pantalla Hi im not talking about read word from outside source This is known as "tokenizing" a string, and now that you know the term for it, you'll have no trouble finding many solutions. Here's a start
+
+echo Hola Mundo
+ls -la
+

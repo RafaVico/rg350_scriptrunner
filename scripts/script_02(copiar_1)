@@ -1,0 +1,6 @@
+#!/bin/sh
+# title=Desc larga
+# desc=Imprime Hola Mundo en pantalla y luego hace lo que le da la gana porque siempre lo hace joer
+
+echo Hola Mundo
+

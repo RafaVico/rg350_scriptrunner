@@ -1,0 +1,6 @@
+#!/bin/sh
+# title=Script 3
+# desc=Imprime Hola Mundo en pantalla
+
+echo Hola Mundo
+

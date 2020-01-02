@@ -1,0 +1,6 @@
+#!/bin/sh
+# title=Hola adiós segundón
+# desc=Imprime Hola Mundo en pantalla
+
+echo Hola Mundo
+
