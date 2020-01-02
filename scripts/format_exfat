@@ -1,0 +1,6 @@
+#!/bin/sh
+# title=Format SD Card (EXFAT)
+# desc=Format the external sd card [exfat]. Save the content before the process, sd card will be erased.
+
+mkfs.exfat /dev/mmcblk1
+

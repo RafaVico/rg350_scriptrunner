@@ -68,6 +68,7 @@ using namespace std;
 #define MODE_BROWSE     1
 #define MODE_EXECUTING  2
 #define MODE_FINISH     3
+#define MODE_CONFIRM    4
 
 ///////////////////////////////////
 /*  Structs                      */
@@ -151,13 +152,14 @@ SDL_Surface *img_working[4];
 ///////////////////////////////////
 /*  Messages                     */
 ///////////////////////////////////
-const char* msg[5]=
+const char* msg[6]=
 {
   "exit",
   "run",
   "accept",
   "cancel",
-  "back"
+  "back",
+  "Are you sure?"
 };
 
 ///////////////////////////////////
@@ -1013,13 +1015,14 @@ void update_browse()
   }
   if(mainjoystick.button_a)
   {
-    if(script_list.size()>0)
+    mode_app=MODE_CONFIRM;
+    /*if(script_list.size()>0)
     {
       pthread_create(&sr_th, NULL, runscript_thd, NULL);
       automated_list=TRUE;
       //get_stdoutfromcommand("scripts/"+script_list[script_list_selected].filename);
       mode_app=MODE_EXECUTING;
-    }
+    }*/
   }
 }
 
@@ -1282,6 +1285,50 @@ void draw_finish()
   draw_text(screen,font,(char*)msg[4],25,dest.y,55,37,56);
 }
 
+void update_confirm()
+{
+  clear_joystick_state();
+  process_events();
+
+  if(mainjoystick.button_start)
+    done=TRUE;
+  if(mainjoystick.button_b)
+    mode_app=MODE_BROWSE;
+  if(mainjoystick.button_a)
+  {
+    if(script_list.size()>0)
+    {
+      pthread_create(&sr_th, NULL, runscript_thd, NULL);
+      automated_list=TRUE;
+      //get_stdoutfromcommand("scripts/"+script_list[script_list_selected].filename);
+      mode_app=MODE_EXECUTING;
+    }
+  }
+
+}
+
+void draw_confirm()
+{
+  draw_browse();
+  SDL_Color col={55,56,128};
+  SDL_Color bor={255,255,255};
+
+  int w=5+10+5+text_width((char*)msg[2])+10+10+5+text_width((char*)msg[3])+5;
+  draw_rectangle((320-w)/2,100,w,37,&col,BORDER_ROUNDED,&bor);
+  draw_text(screen,font,(char*)msg[5],(320-text_width((char*)msg[5]))/2,105,255,255,255);
+
+  SDL_Rect dest;
+  dest.x=160-15-text_width((char*)msg[2])-5;
+  dest.y=120;
+  if(img_buttons[6])
+    SDL_BlitSurface(img_buttons[6],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[2],160-5-text_width((char*)msg[2]),dest.y,255,255,0);
+  dest.x=160+5;
+  if(img_buttons[7])
+    SDL_BlitSurface(img_buttons[7],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[3],180,dest.y,255,255,0);
+}
+
 ///////////////////////////////////
 /*  Init                         */
 ///////////////////////////////////
@@ -1317,6 +1364,10 @@ int main(int argc, char *argv[])
       case MODE_FINISH:
         update_finish();
         draw_finish();
+        break;
+      case MODE_CONFIRM:
+        update_confirm();
+        draw_confirm();
         break;
     }
 

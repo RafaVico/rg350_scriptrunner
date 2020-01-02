@@ -1,6 +1,0 @@
-#!/bin/sh
-# title=Hola mundo
-# desc=Imprime Hola Mundo en pantalla
-
-echo Hola Mundo
-

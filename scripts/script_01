@@ -1,6 +1,0 @@
-#!/bin/sh
-# title=List of files hóla adiós
-# desc=lista los archivos de todo el sistema
-
-find /
-

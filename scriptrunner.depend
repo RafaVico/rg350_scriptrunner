@@ -17,3 +17,21 @@
 	<stdio.h>
 	<stdlib.h>
 
+1577969245 source:/home/rafa/Github__/rg350_scriptrunner/src/main.cpp
+	<sys/stat.h>
+	<sys/types.h>
+	<dirent.h>
+	<math.h>
+	<pthread.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_ttf.h>
+	<SDL/SDL_mixer.h>
+	<string>
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<stdio.h>
+	<stdlib.h>
+
