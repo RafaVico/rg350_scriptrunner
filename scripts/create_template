@@ -1,0 +1,6 @@
+#!/bin/sh
+# title=Create script template
+# desc=Use this template to create your own script and put it in /usr/local/home/.scriptrunner
+
+echo Hello World
+
