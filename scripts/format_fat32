@@ -2,5 +2,7 @@
 # title=Format SD Card (FAT32)
 # desc=Format the external sd card [fat32]. Save the content before the process, sd card will be erased.
 
-mkfs.vfat -F 32 /dev/mmcblk1 -I
+echo "Formating deactivated"
+echo "mkfs.vfat -F 32 /dev/mmcblk1 -I"
+echo "Finished formating"
 

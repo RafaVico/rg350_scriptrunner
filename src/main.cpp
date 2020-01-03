@@ -932,6 +932,8 @@ int read_script_data(std::string filename,script_data& sc)
 
 void load_scripts()
 {
+  script_list.clear();
+
   DIR* dirp = opendir("scripts");
   struct dirent * dp;
   if(dirp)
@@ -1239,7 +1241,10 @@ void update_finish()
   if(mainjoystick.button_start)
     done=TRUE;
   if(mainjoystick.button_b)
+  {
+    load_scripts();
     mode_app=MODE_BROWSE;
+  }
   if(mainjoystick.pad_up && console_idx>0)
   {
     console_idx--;

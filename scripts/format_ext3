@@ -2,5 +2,7 @@
 # title=Format SD Card (EXT3)
 # desc=Format the external sd card [ext3]. Save the content before the process, sd card will be erased.
 
-mkfs.ext3 -m 0 /dev/mmcblk1
+echo "Formating deactivated"
+echo "mkfs.ext3 -m 0 /dev/mmcblk1"
+echo "Finished formating"
 
