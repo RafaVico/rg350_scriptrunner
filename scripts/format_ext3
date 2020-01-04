@@ -1,8 +1,9 @@
 #!/bin/sh
 # title=Format SD Card (EXT3)
-# desc=Format the external sd card [ext3]. Save the content before the process, sd card will be erased.
+# desc=Format the external sd card [ext3]. This is DANGEROUS, all content in sd card will be erased.
 
-echo "Formating deactivated"
-echo "mkfs -t ext3 /dev/mmcblk1p1"
-echo "Finished formating"
+echo "Formating SD Card"
+mkfs -t ext3 /dev/mmcblk1p1
+echo "Formating finished."
+echo "END"
 

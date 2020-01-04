@@ -3,7 +3,7 @@
 # desc=Umount extern SD card, so you can remove it safety.
 
 echo "Umounting SD card."
-umount /media/sdcard
+umount -f /media/sdcard
 echo "SD card umounted, you can remove it."
 echo "END"
 
