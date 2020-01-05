@@ -777,7 +777,8 @@ void clear_consolelines_idx()
 void update_consoleoutput_index(int diff)
 {
   for(int f=0; f<100; f++)
-    consolelines_idx[f]=consolelines_idx[f]-diff;
+    if(consolelines_idx[f]>0)
+      consolelines_idx[f]=consolelines_idx[f]-diff;
 }
 
 void format_consoleoutput()
@@ -788,16 +789,27 @@ void format_consoleoutput()
 
   for(int f=consoleoutput.size()-1; f>0; f--)
   {
-    if(consoleoutput[f]==10)
+    switch(consoleoutput[f])
     {
-      consolelines_idx[consolelines]=f;
-      consolelines++;
-      if(consolelines>99)
-      {
-        consoleoutput=consoleoutput.substr(f+1);
-        update_consoleoutput_index(f+1);
+      // return
+      case 10:
+        consolelines_idx[consolelines]=f;
+        consolelines++;
+        if(consolelines>99)
+        {
+          consoleoutput=consoleoutput.substr(f+1);
+          update_consoleoutput_index(f+1);
+          break;
+        }
         break;
-      }
+      // backspace
+      case 8:
+        if(f>1 && consoleoutput[f-1]!=8)
+        {
+          consoleoutput=consoleoutput.substr(0,f-1)+consoleoutput.substr(f+1);
+          update_consoleoutput_index(2);
+        }
+        break;
     }
   }
 }
@@ -839,19 +851,6 @@ static void* runscript_thd(void* p)
   mode_app=MODE_FINISH;
 	return NULL;
 }
-
-/*int main ()
-{
-  string ls = GetStdoutFromCommand("ls -la");
-  cout << "LS: " << ls << endl;
-
-  pthread_create(&sr_th, NULL, scriptrun_thd, NULL);
-
-	pthread_cancel(sr_th);
-	pthread_join(sr_th, NULL);
-
-  return 0;
-}*/
 
 void format_desc(std::string desc)
 {
@@ -1173,14 +1172,15 @@ void draw_executing()
   int y=20;
   if(automated_list)
   {
-    if(consolelines>10)
-      console_idx=consolelines-10;
-    else
-      console_idx=0;
+    if(consolelines>5)
+      console_idx=consolelines-5;
+    /*else
+      console_idx=0;*/
   }
   pthread_mutex_lock(&lock_consoleoutput);
   for(int f=consolelines_idx[consolelines-console_idx]; f<consoleoutput.size(); f++)
   {
+    // Return
     if(consoleoutput[f]==10)
     {
       if(f!=consolelines_idx[consolelines-console_idx])
@@ -1189,7 +1189,8 @@ void draw_executing()
         y+=10;
       }
     }
-    else
+    // printable character
+    else if(consoleoutput[f]>=32 && consoleoutput[f]<=126)
     {
       char cr[2];
       cr[0]=consoleoutput[f];
