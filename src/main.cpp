@@ -784,7 +784,6 @@ void update_consoleoutput_index(int diff)
 void format_consoleoutput()
 {
   consolelines=0;
-  console_idx=0;
   clear_consolelines_idx();
 
   for(int f=consoleoutput.size()-1; f>0; f--)
@@ -931,6 +930,9 @@ int read_script_data(std::string filename,script_data& sc)
 
 void load_scripts()
 {
+  automated_list=TRUE;
+  console_idx=0;
+
   script_list.clear();
 
   DIR* dirp = opendir("scripts");

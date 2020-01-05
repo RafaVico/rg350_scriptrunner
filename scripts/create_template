@@ -9,11 +9,11 @@ cat > /usr/local/home/.scriptrunner/template <<EOF
 # desc=Script description
 
 echo "New script"
-echo "Also change the file name if don't want to overwrite it."
+echo "Change also the file name if don't want to overwrite it."
 EOF
 
 chmod +x /usr/local/home/.scriptrunner/template
 
-echo "Template script created."
+echo "Template script created in /usr/local/home/.scriptrunner/"
 echo "END"
 
