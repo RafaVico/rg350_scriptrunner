@@ -442,7 +442,8 @@ void init_game()
   TTF_Init();
   font=TTF_OpenFont("media/pixelberry.ttf", 8);
   //font2=TTF_OpenFont("media/basis33.ttf", 15);
-  font2=TTF_OpenFont("media/712_serif.ttf", 15);
+  //font2=TTF_OpenFont("media/712_serif.ttf", 15);
+  font2=TTF_OpenFont("media/pfcb.ttf", 8);
 
   load_imgalpha("media/background.png",img_background);
 
@@ -1144,18 +1145,18 @@ void update_executing()
       console_idx=consolelines-1;
     automated_list=FALSE;
   }
-  /*static int sfon=12;
+  /*static int sfon=10;
   if(mainjoystick.button_l2)
   {
     sfon--;
     TTF_CloseFont(font2);
-    font2=TTF_OpenFont("media/basis33.ttf", sfon);
+    font2=TTF_OpenFont("media/pfcb.ttf", sfon);
   }
   if(mainjoystick.button_r2)
   {
     sfon++;
     TTF_CloseFont(font2);
-    font2=TTF_OpenFont("media/basis33.ttf",sfon);
+    font2=TTF_OpenFont("media/pfcb.ttf",sfon);
   }*/
 }
 
