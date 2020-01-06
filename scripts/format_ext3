@@ -10,8 +10,7 @@ echo "Formating SD Card"
 mkfs -t ext3 /dev/mmcblk1p1
 echo "Formating finished"
 echo "Mounting SD Card"
-mkdir /media/sdcard
-mount /dev/mmcblk1p1 /media/sdcard
+mount -t ext3 /dev/mmcblk1p1 /media/
 chmod 0777 -R /media/sdcard
 echo "END"
 

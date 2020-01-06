@@ -804,7 +804,7 @@ void format_consoleoutput()
         break;
       // backspace
       case 8:
-        if(f>1 && consoleoutput[f-1]!=8)
+        if(f>1 && consoleoutput[f-1]>=32 && consoleoutput[f-1]<=126)
         {
           consoleoutput=consoleoutput.substr(0,f-1)+consoleoutput.substr(f+1);
           update_consoleoutput_index(2);
@@ -1207,6 +1207,20 @@ void draw_executing()
       }
     //draw_text(screen,font,(char*)consoleoutput.c_str(),10,20,255,255,255);
     }
+    /*else
+    {
+      std::stringstream nnss;
+      nnss<<"["<<int(consoleoutput[f])<<"]";
+      std::string nn;
+      nnss>>nn;
+      draw_text(screen,font2,(char*)nn.c_str(),x,y,255,255,255);
+      x=x+text_width((char*)nn.c_str(),font2);
+      if(x>305)
+      {
+        x=10;
+        y+=10;
+      }
+    }*/
   }
   pthread_mutex_unlock(&lock_consoleoutput);
 
