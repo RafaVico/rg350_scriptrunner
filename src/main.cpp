@@ -69,6 +69,7 @@ using namespace std;
 #define MODE_EXECUTING  2
 #define MODE_FINISH     3
 #define MODE_CONFIRM    4
+#define MODE_VIEWCODE   5
 
 ///////////////////////////////////
 /*  Structs                      */
@@ -152,14 +153,15 @@ SDL_Surface *img_working[4];
 ///////////////////////////////////
 /*  Messages                     */
 ///////////////////////////////////
-const char* msg[6]=
+const char* msg[7]=
 {
   "exit",
   "run",
   "accept",
   "cancel",
   "back",
-  "Are you sure?"
+  "Are you sure?",
+  "view"
 };
 
 ///////////////////////////////////
@@ -925,6 +927,7 @@ int read_script_data(std::string filename,script_data& sc)
       }
     }
   }
+  file.close();
 
   return is_script;
 }
@@ -974,6 +977,22 @@ void load_scripts()
   }
 }
 
+void view_script()
+{
+  std::ifstream file(script_list[script_list_selected].folder+"/"+script_list[script_list_selected].filename);
+  std::string str;
+  consoleoutput="";
+
+  while(std::getline(file,str))
+  {
+    consoleoutput.append(str+"\n");
+  }
+  file.close();
+  format_consoleoutput();
+  automated_list=FALSE;
+  console_idx=0;
+}
+
 ///////////////////////////////////
 /*  Update browse mode           */
 ///////////////////////////////////
@@ -1020,13 +1039,11 @@ void update_browse()
   if(mainjoystick.button_a)
   {
     mode_app=MODE_CONFIRM;
-    /*if(script_list.size()>0)
-    {
-      pthread_create(&sr_th, NULL, runscript_thd, NULL);
-      automated_list=TRUE;
-      //get_stdoutfromcommand("scripts/"+script_list[script_list_selected].filename);
-      mode_app=MODE_EXECUTING;
-    }*/
+  }
+  if(mainjoystick.button_x)
+  {
+    view_script();
+    mode_app=MODE_VIEWCODE;
   }
 }
 
@@ -1076,6 +1093,10 @@ void draw_browse()
           if(img_buttons[6])
             SDL_BlitSurface(img_buttons[6],NULL,screen,&dest);
           draw_text(screen,font,(char*)msg[1],dest.x+15,y,255,255,0);
+          dest.x=dest.x-10-text_width((char*)msg[6])-15;
+          if(img_buttons[8])
+            SDL_BlitSurface(img_buttons[8],NULL,screen,&dest);
+          draw_text(screen,font,(char*)msg[6],dest.x+15,y,255,255,0);
         }
         draw_text(screen,font,(char*)script_list[script_list_idx+idcount].title.c_str(),20,y,255,255,255);
         //draw_text(screen,font,(char*)script_list[script_list_idx+idcount].filename.c_str(),120,y,255,255,255);
@@ -1306,6 +1327,12 @@ void draw_finish()
   if(img_buttons[7])
     SDL_BlitSurface(img_buttons[7],NULL,screen,&dest);
   draw_text(screen,font,(char*)msg[4],25,dest.y,55,37,56);
+
+  dest.x=320-10-text_width((char*)msg[0])-15;
+  dest.y=227;
+  if(img_buttons[5])
+    SDL_BlitSurface(img_buttons[5],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[0],dest.x+15,dest.y,55,37,56);
 }
 
 void update_confirm()
@@ -1352,6 +1379,62 @@ void draw_confirm()
   draw_text(screen,font,(char*)msg[3],180,dest.y,255,255,0);
 }
 
+void update_viewcode()
+{
+  clear_joystick_state();
+  process_events();
+
+  if(mainjoystick.button_start)
+    done=TRUE;
+  if(mainjoystick.button_b)
+  {
+    mode_app=MODE_BROWSE;
+  }
+  if(mainjoystick.pad_up && console_idx>0)
+  {
+    console_idx--;
+  }
+  if(mainjoystick.pad_down && console_idx<(consolelines-1))
+  {
+    console_idx++;
+  }
+  if(mainjoystick.button_l1)
+  {
+    console_idx-=10;
+    if(console_idx<0)
+      console_idx=0;
+  }
+  if(mainjoystick.button_r1)
+  {
+    console_idx+=10;
+    if(console_idx>=consolelines)
+      console_idx=consolelines-1;
+  }
+}
+
+void draw_viewcode()
+{
+  draw_executing();
+
+  // header
+  std::string str="["+script_list[script_list_selected].filename+"]";
+  draw_text(screen,font,(char*)str.c_str(),10+10+text_width((char*)"Scriptrunner"),3,55,37,56);
+
+  // foot
+  SDL_Rect dest;
+  dest.x=10;
+  dest.y=227;
+  if(img_buttons[7])
+    SDL_BlitSurface(img_buttons[7],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[4],25,dest.y,55,37,56);
+
+  dest.x=320-10-text_width((char*)msg[0])-15;
+  dest.y=227;
+  if(img_buttons[5])
+    SDL_BlitSurface(img_buttons[5],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[0],dest.x+15,dest.y,55,37,56);
+}
+
 ///////////////////////////////////
 /*  Init                         */
 ///////////////////////////////////
@@ -1391,6 +1474,10 @@ int main(int argc, char *argv[])
       case MODE_CONFIRM:
         update_confirm();
         draw_confirm();
+        break;
+      case MODE_VIEWCODE:
+        update_viewcode();
+        draw_viewcode();
         break;
     }
 
