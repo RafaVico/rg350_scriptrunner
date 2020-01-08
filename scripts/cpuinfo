@@ -1,0 +1,8 @@
+#!/bin/sh
+# title=CPU Info
+# desc=Display type of processor, model and other hardware info.
+
+echo "Showing info."
+cat /proc/cpuinfo
+echo "END"
+
