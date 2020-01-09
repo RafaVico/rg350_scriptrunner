@@ -145,7 +145,7 @@ int automated_list=TRUE;
 
 // graphics
 SDL_Surface *img_background;
-SDL_Surface *img_buttons[10];
+SDL_Surface *img_buttons[14];
 SDL_Surface *img_working[4];
 //sonidos
 //Mix_Chunk *sound_tone;
@@ -153,7 +153,7 @@ SDL_Surface *img_working[4];
 ///////////////////////////////////
 /*  Messages                     */
 ///////////////////////////////////
-const char* msg[7]=
+const char* msg[8]=
 {
   "exit",
   "run",
@@ -161,7 +161,8 @@ const char* msg[7]=
   "cancel",
   "back",
   "Are you sure?",
-  "view"
+  "view",
+  "move"
 };
 
 ///////////////////////////////////
@@ -454,7 +455,7 @@ void init_game()
   tmpsurface=IMG_Load("media/buttons.png");
   if(tmpsurface)
   {
-    for(int f=0; f<10; f++)
+    for(int f=0; f<14; f++)
     {
       img_buttons[f]=SDL_CreateRGBSurface(SDL_SRCCOLORKEY, 10, 10, 16, 0,0,0,0);
       SDL_Rect src;
@@ -775,6 +776,7 @@ void clear_consolelines_idx()
 {
   for(int f=0; f<100; f++)
     consolelines_idx[f]=0;
+  consolelines=0;
 }
 
 void update_consoleoutput_index(int diff)
@@ -936,6 +938,8 @@ void load_scripts()
 {
   automated_list=TRUE;
   console_idx=0;
+  consoleoutput="";
+  clear_consolelines_idx();
 
   script_list.clear();
 
@@ -1072,32 +1076,37 @@ void draw_browse()
     else
       y=25;
     int idcount=0;
+    // print script list
     while(y<240 && (script_list_idx+idcount)<script_list.size())
     {
       if(script_list_idx<script_list.size())
       {
         if(script_list_idx+idcount==script_list_selected)
         {
+          // print description
           SDL_Color c={104,43,130};
           if(desc_lines.size()>0)
           {
-            SDL_Color b={255,255,255};
-            draw_rectangle(50,y,256,14+desc_lines.size()*10,&c,BORDER_SINGLE,&b);
+            SDL_Color b={55,37,56};
+            draw_rectangle(50,y,256,14+desc_lines.size()*10,&b,BORDER_SINGLE,&c);   // description box
             for(int f=0; f<desc_lines.size(); f++)
               draw_text(screen,font,(char*)desc_lines[f].c_str(),55,y+9+f*10,110,238,255);
             //y=y+5+desc_lines.size()*10;
           }
-          draw_rectangle(15,y,290,10,&c);
+          draw_rectangle(15,y,290,10,&c);   // line of selected script
           dest.x=320-25-text_width((char*)msg[1])-15;
           dest.y=y;
+          // view button
           if(img_buttons[6])
             SDL_BlitSurface(img_buttons[6],NULL,screen,&dest);
           draw_text(screen,font,(char*)msg[1],dest.x+15,y,255,255,0);
           dest.x=dest.x-10-text_width((char*)msg[6])-15;
+          // run button
           if(img_buttons[8])
             SDL_BlitSurface(img_buttons[8],NULL,screen,&dest);
           draw_text(screen,font,(char*)msg[6],dest.x+15,y,255,255,0);
         }
+        // script name
         draw_text(screen,font,(char*)script_list[script_list_idx+idcount].title.c_str(),20,y,255,255,255);
         //draw_text(screen,font,(char*)script_list[script_list_idx+idcount].filename.c_str(),120,y,255,255,255);
         if(script_list_idx+idcount==script_list_selected)
@@ -1183,21 +1192,21 @@ void update_executing()
 
 void draw_executing()
 {
-  // background
   SDL_Rect dest;
-  /*dest.x=0;
-  dest.y=0;
-  if(img_background)
-    SDL_BlitSurface(img_background,NULL,screen,&dest);*/
-  SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format,55,37,56));
+
+  // background
+  if(mode_app==MODE_EXECUTING || mode_app==MODE_FINISH)
+    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format,55,37,56));
+  else
+    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format,56,152,255));
 
   // console output
   int x=10;
   int y=20;
   if(automated_list)
   {
-    if(consolelines>5)
-      console_idx=consolelines-5;
+    if(consolelines>14)
+      console_idx=consolelines-14;
     /*else
       console_idx=0;*/
   }
@@ -1265,6 +1274,23 @@ void draw_executing()
   // foot
   col={178,188,194};
   draw_rectangle(0,225,320,15,&col);
+
+  // moving buttons
+  dest.x=10+15+10+text_width((char*)msg[4]);
+  dest.y=227;
+  if(img_buttons[0])
+    SDL_BlitSurface(img_buttons[0],NULL,screen,&dest);
+  dest.x+=10;
+  if(img_buttons[12])
+    SDL_BlitSurface(img_buttons[12],NULL,screen,&dest);
+  dest.x+=10;
+  if(img_buttons[13])
+    SDL_BlitSurface(img_buttons[13],NULL,screen,&dest);
+  dest.x+=10;
+  if(img_buttons[1])
+    SDL_BlitSurface(img_buttons[1],NULL,screen,&dest);
+  draw_text(screen,font,(char*)msg[7],dest.x+15,dest.y,55,37,56);
+
   /*dest.x=320-10-text_width((char*)msg[0])-15;
   dest.y=227;
   if(img_buttons[5])
@@ -1460,24 +1486,24 @@ int main(int argc, char *argv[])
     switch(mode_app)
     {
       case MODE_BROWSE:
-        update_browse();
         draw_browse();
+        update_browse();
         break;
       case MODE_EXECUTING:
-        update_executing();
         draw_executing();
+        update_executing();
         break;
       case MODE_FINISH:
-        update_finish();
         draw_finish();
+        update_finish();
         break;
       case MODE_CONFIRM:
-        update_confirm();
         draw_confirm();
+        update_confirm();
         break;
       case MODE_VIEWCODE:
-        update_viewcode();
         draw_viewcode();
+        update_viewcode();
         break;
     }
 
