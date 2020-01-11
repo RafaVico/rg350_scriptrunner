@@ -2,6 +2,10 @@
 # title=Hardware Info
 # desc=Display processor, model and other hardware info.
 
+echo "FIRMWARE info"
+echo ""
+cat /proc/version
+echo ""
 echo "CPU info."
 echo ""
 cat /proc/cpuinfo
