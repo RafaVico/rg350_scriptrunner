@@ -1,0 +1,16 @@
+#!/bin/sh
+# title=Save home folder
+# desc=Copy /home folder to SD card to save your programs settings.
+
+if [ ! -d /media/sdcard/home ]
+then
+  echo "Creating folder in SD card."
+  echo ""
+  mkdir /media/sdcard/home
+fi
+echo "Copying home folder."
+rsync -a -l -r /media/home/ /media/sdcard/home/
+echo ""
+echo "/home copied."
+echo "END"
+
