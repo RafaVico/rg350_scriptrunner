@@ -25,8 +25,11 @@ FLIST="${FLIST} scriptrunner.png"
 FLIST="${FLIST} default.gcw0.desktop"
 
 rm -f ${OPK_NAME}
-mksquashfs ${FLIST} ${OPK_NAME} -all-root -no-xattrs -noappend -no-exports
+mksquashfs ${FLIST} releases/${OPK_NAME} -all-root -no-xattrs -noappend -no-exports
 
 cat default.gcw0.desktop
 rm -f default.gcw0.desktop
+
+echo ""
+echo ${OPK_NAME} created in releases.
 
