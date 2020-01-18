@@ -1,6 +1,7 @@
 #!/bin/sh
 # title=Hardware Info
 # desc=Display processor, model and other hardware info.
+# author=Rafa Vico
 
 echo "FIRMWARE info"
 echo ""

@@ -1,6 +1,7 @@
 #!/bin/sh
 # title=New script template
 # desc=Create a script template in /usr/local/home/.scriptrunner directory.
+# author=Rafa Vico
 
 echo "Creating template"
 cat > /usr/local/home/.scriptrunner/template <<EOF

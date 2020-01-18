@@ -1,6 +1,7 @@
 #!/bin/sh
 # title=Restore gmenu2x sections
-# desc=Create default sections in gmenu2x and restore missings apps included in firmware.
+# desc=Create default sections in gmenu2x and restore missings apps included in firmware. Rogue Firmware already do this at boot.
+# author=Rafa Vico
 
 echo "Restoring default sections."
 cp -r /usr/share/gmenu2x/sections/* /usr/local/home/.gmenu2x/sections

@@ -1,6 +1,7 @@
 #!/bin/sh
 # title=Format SD Card (FAT32) CAUTION!
 # desc=Format the external sd card [fat32]. This is DANGEROUS, all content in sd card will be erased.
+# author=Rafa Vico
 
 echo "Umounting SD Card"
 umount -f /media/sdcard
