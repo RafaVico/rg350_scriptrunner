@@ -1,7 +1,7 @@
 #!/bin/sh
 # title=Restore home folder
 # desc=Restore a backup to home folder, recover all your settings.
-# author=Eduardo Moreno
+# author=eduardofilo
 
 echo "Restoring home folder."
 tar -xf /media/sdcard/home_backup.tar -C /media/data/local
