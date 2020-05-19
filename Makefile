@@ -1,6 +1,6 @@
 CC         := /opt/gcw0-toolchain/usr/bin/mipsel-linux-g++
 STRIP      := /opt/gcw0-toolchain/usr/bin/mipsel-linux-strip
-LIBS       := -L/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/lib
+LIBS       := -L/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/lib -L/opt/gcw0-toolchain/usr/lib
 INCS	     := -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include -I inc
 
 CC           ?= g++
@@ -31,7 +31,7 @@ ifdef DO_STRIP
 endif
 
 $(OBJ): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
-	$(CC) -c $< -o $@ $(INCS) -std=c++11
+	$(CC) -c $< -o $@ $(INCS) -std=c++11 -DPLATFORM_LINUX
 
 $(OBJDIR):
 	mkdir -p $@
