@@ -3,8 +3,13 @@
 # desc=Restore a backup to home folder, recover all your settings.
 # author=eduardofilo
 
+if [ ! -f "/media/sdcard/backups/home_backup.tar" ]; then
+echo "The backup file was not found, to create a backup use the backup creation script."
+else
 echo "Restoring home folder."
-tar -xf /media/sdcard/home_backup.tar -C /media/data/local
+echo "Do not restart or turn off the console until the process is finished."
+tar -xf /media/sdcard/backups/home_backup.tar -C /media/data/local
+fi
 echo ""
 echo "Restoring done."
 echo "END"
