@@ -4,8 +4,14 @@
 # author=eduardofilo
 
 echo "Backup home folder."
-tar -cf /media/sdcard/home_backup.tar -C /media/data/local home
+if [ ! -f "/media/sdcard/backups/home_backup.tar" ]; then
+echo "Creating backups folder in media/sdcard/"
+mkdir /media/sdcard/backups
+else
+echo "Compressing the home folder on the external card may take some time."
+echo "Do not restart or turn off the console until the process is finished."
+tar -cf /media/sdcard/backups/home_backup.tar -C /media/data/local home
+fi
 echo ""
 echo "Backup done."
 echo "END"
-
